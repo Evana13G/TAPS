@@ -4,11 +4,11 @@ import xpc
 class PlaneState(object):
 
     # Should we use lat, long, elevation or x,y,z?
-    def __init__(self, dest_lat, dest_long, dest_ele, t_vel_x, t_vel_y, t_vel_z):
+    def __init__(self, dest_x, dest_y, dest_z, t_vel_x, t_vel_y, t_vel_z):
         self.client = xpc.XPlaneConnect()
-        self.dest_lat = dest_lat
-        self.dest_long = dest_long
-        self.dest_alt = dest_ele
+        self.dest_x = dest_x
+        self.dest_y = dest_y
+        self.dest_z = dest_z
         self.t_vel_x = t_vel_x
         self.t_vel_y = t_vel_y
         self.t_vel_z = t_vel_z
@@ -28,6 +28,7 @@ class PlaneState(object):
             "sim/flightmodel/position/Q", # The pitch rotation rates (relative to the flight)
             "sim/flightmodel/position/R", # The yaw rotation rates (relative to the flight)
             "sim/flightmodel/position/groundspeed",
+            "sim/flightmodel/position/true_airspeed",
             "sim/flightmodel/position/local_vx",
             "sim/flightmodel/position/local_vy",
             "sim/flightmodel/position/local_vz",
