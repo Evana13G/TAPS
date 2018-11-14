@@ -52,3 +52,12 @@ class PlaneState(object):
             return multiplier * 100
         return -1
 
+    def get_yoke_position(self):
+        refs = [
+            "sim/joystick/yoke_pitch_ratio",
+            "sim/joystick/yoke_roll_ratio",
+            "sim/joystick/yoke_heading_ratio",
+        ]
+        return [x[0] for x in self.client.getDREFs(refs)]
+
+
