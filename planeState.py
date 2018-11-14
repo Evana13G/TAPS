@@ -9,9 +9,7 @@ class PlaneState(object):
         self.dest_x = dest_x
         self.dest_y = dest_y
         self.dest_z = dest_z
-        self.t_vel_x = t_vel_x
-        self.t_vel_y = t_vel_y
-        self.t_vel_z = t_vel_z
+        self.dest_airspeed = dest_airspeed
 
     def get_raw_state(self):
         '''
