@@ -33,7 +33,7 @@ class PlaneState(object):
         ]
         return [x[0] for x in self.client.getDREFs(refs)]
 
-    def get_state_vector():
+    def get_state_vector(self):
         state = get_raw_state()
         state.append(self.dest_x - state[0])
         state.append(self.dest_y - state[1])
