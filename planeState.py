@@ -38,5 +38,17 @@ class PlaneState(object):
         state.append(self.dest_x - state[0])
         state.append(self.dest_y - state[1])
         state.append(self.dest_z - state[2])
-        state.append(self.dest_airspeed - state[7])
+        state.append(self.dest_airspeed - state[6])
         return state
+
+    def get_reward(self):
+        state = self.get_state_vector()
+        multiplier = 0
+        if abs(state[-2]) < 25 and abs(state[-3]) < 25 and abs(state[-4]) < 25:
+            multiplier = 1
+        else:
+            multiplier = .99 ** ((state[-2] + state[-3] + state[-4])/5)
+        if abs(state[-1]) < 1:
+            return multiplier * 100
+        return -1
+
