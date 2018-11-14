@@ -60,4 +60,3 @@ class PlaneState(object):
         ]
         return [x[0] for x in self.client.getDREFs(refs)]
 
-

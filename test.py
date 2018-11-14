@@ -1,4 +1,5 @@
-import planeState
+from plane_state import PlaneState
+from flight_manager import FlightManager
 from time import sleep
 
 
@@ -8,3 +9,4 @@ print state.get_state_vector()
 while True:
   print state.get_state_vector()
   sleep(1)
+
