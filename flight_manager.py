@@ -4,6 +4,7 @@ from plane_state import PlaneState
 import xpc
 from time import sleep
 
+# This essentially drives all production
 class FlightManager:
   def __init__(self):
     self.duration = 90
