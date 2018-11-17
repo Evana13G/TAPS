@@ -1,7 +1,7 @@
 from plane_state import PlaneState
 from flight_manager import FlightManager
 from time import sleep
-
+from agent import Agent
 
 # state = planeState.PlaneState(5691.52001953125, -7.349344253540039, -51844.9609375, 10)
 # print state.get_state_vector()
@@ -10,23 +10,10 @@ from time import sleep
 #   print state.get_state_vector()
 #   sleep(1)
 
+agent = Agent()
 
-
-flightManager = FlightManager()
-
-
-aircraftData = {}
-aircraftData['lat'] = 37.524
-aircraftData['lon'] = -122.06899
-aircraftData['alt'] = 2500
-aircraftData['pitch'] = 0
-aircraftData['roll'] = 0
-aircraftData['heading'] = 0
-aircraftData['gear'] = 1
-aircraftData['attack'] = [18,   0, -998,   0, -998, -998, -998, -998, -998]
-aircraftData['velocity'] = [ 3, 130,  130, 130,  130, -998, -998, -998, -998]
-aircraftData['orientation'] = [16,   0,    0,   0, -998, -998, -998, -998, -998]
+flightManager = FlightManager(agent)
 
 print "Starting Flight"
-flightManager.startFlight(aircraftData)
-
+flightManager.run_episode()
+flightManager.run_episode()

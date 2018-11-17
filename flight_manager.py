@@ -7,48 +7,51 @@ from time import sleep
 # This essentially drives all production
 class FlightManager:
 
-  startLocation = {
-    'lat': 37.524
-    'lon': -122.06899
-    'alt': 2500
-    'pitch': 0
-    'roll': 0
-    'heading': 0
-    'gear': 1
-    'attack': [18, 0, -998,   0, -998, -998, -998, -998, -998]
-    'velocity': [ 3, 130,  130, 130,  130, -998, -998, -998, -998]
-    'orientation': [16,   0,    0,   0, -998, -998, -998, -998, -998]
-  }
-
   def __init__(self, pilot):
     self.duration = 90
     self.client = xpc.XPlaneConnect()
     self.state = PlaneState(0,0,0,0)
     self.agent = pilot
     self.episode = 0
+    self.startLocation = {
+      'lat': 37.524,
+      'lon': -122.06899,
+      'alt': 2500,
+      'pitch': 0,
+      'roll': 0,
+      'heading': 0,
+      'gear': 1,
+      'attack': [18, 0, -998,   0, -998, -998, -998, -998, -998],
+      'velocity': [ 3, 130,  130, 130,  130, -998, -998, -998, -998],
+      'orientation': [16,   0,    0,   0, -998, -998, -998, -998, -998],
+    }
+    self.total_reward = 0
 
 
-  def runEpisode()
+  def run_episode(self):
     print "New episode"
     self.episode = self.episode + 1
     self.client.pauseSim(True)
-    self.startFlight(startLocation)
+    self.start_flight(self.startLocation)
     self.client.pauseSim(False)
     step_count = 0
+    episode_reward = 0
     while True and step_count < 1000:
       state_vector = self.state.get_state_vector()
       action_vectors = self.state.get_action_vectors()
-      action = self.agent.getAction()
+      action = self.agent.get_action(state_vector, action_vectors)
       self.client.sendCTRL(action)
       sleep(0.2)
       reward = self.state.get_reward()
+      episode_reward += reward
+      self.total_reward += reward
       self.agent.update(state_vector, action, reward)
       step_count += step_count
-      print "%d, %d,%d" % (self.episode, step_count,reward)
+      print "%d, %d, %d, %d" % (self.episode, step_count, reward, episode_reward)
 
 
 
-  def startFlight(self, aircraftData):
+  def start_flight(self, aircraftData):
     # Set position of the player aircraft
     print "Resetting position"
     #       Lat     Lon         Alt   Pitch Roll Yaw Gear
