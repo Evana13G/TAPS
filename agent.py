@@ -5,8 +5,10 @@ import xpc
 from time import sleep
 
 class Agent:
-  def __init__(self):
-    self.learning_mode = "Q"
+  def __init__(self, _learning_mode, _w, discount_factor):
+    self.learning_mode = _learning_mode
+    self.W = _w
+    self.gamma = discount_factor
 
   def beginLearning(self):
     print "Begin learning"
@@ -16,3 +18,14 @@ class Agent:
 
   def update(self, state, action, reward):
     pass
+
+  def get_qval(seld, state, action):
+    q = 0
+    numStateFeatures = len(state)
+
+    for i in range(numStateFeatures):
+      q = q + (state[i] * self.W[i])
+    for i in range(len(action)):
+      q = q + (state[i] * self.W[i + numStateFeatures])
+
+    return q
