@@ -16,15 +16,15 @@ class PlaneState(object):
         get_raw_state returns a state vector containing the following in order
         '''
         refs = [
-            "sim/flightmodel/position/local_x", # X is like lat?
-            "sim/flightmodel/position/local_y", # Y is like long?
-            "sim/flightmodel/position/local_z", # Z is like altitude?
-            "sim/flightmodel/position/local_vx",
-            "sim/flightmodel/position/local_vy",
-            "sim/flightmodel/position/local_vz",
-            "sim/flightmodel/position/true_airspeed",
-            "sim/flightmodel/position/true_theta", # Pitch
-            "sim/flightmodel/position/true_phi", # Roll
+            "sim/flightmodel/position/local_x", # X is like lat? 0
+            "sim/flightmodel/position/local_y", # Y is like long? 1
+            "sim/flightmodel/position/local_z", # Z is like altitude? 2
+            "sim/flightmodel/position/local_vx", # 3
+            "sim/flightmodel/position/local_vy", # 4
+            "sim/flightmodel/position/local_vz", # 5
+            "sim/flightmodel/position/true_airspeed", # 6
+            "sim/flightmodel/position/true_theta", # Pitch 7
+            "sim/flightmodel/position/true_phi", # Roll 8
             "sim/flightmodel/position/true_psi", # Heading
             "sim/flightmodel/position/P", # The roll rotation rates (relative to the flight)
             "sim/flightmodel/position/Q", # The pitch rotation rates (relative to the flight)
@@ -41,16 +41,23 @@ class PlaneState(object):
         state.append(self.dest_airspeed - state[6])
         return state
 
+    # def get_reward(self):
+    #     state = self.get_state_vector()
+    #     multiplier = 0
+    #     if abs(state[-2]) < 25 and abs(state[-3]) < 25 and abs(state[-4]) < 25:
+    #         multiplier = 1
+    #     else:
+    #         multiplier = .99 ** ((state[-2] + state[-3] + state[-4])/5)
+    #     if abs(state[-1]) < 1:
+    #         return multiplier * 100
+    #     return -1
+
     def get_reward(self):
-        state = self.get_state_vector()
-        multiplier = 0
-        if abs(state[-2]) < 25 and abs(state[-3]) < 25 and abs(state[-4]) < 25:
-            multiplier = 1
+        state = self.get_raw_state()
+        if abs(state[7]) < 45 and abs(state[8]) < 45:
+            return 1
         else:
-            multiplier = .99 ** ((state[-2] + state[-3] + state[-4])/5)
-        if abs(state[-1]) < 1:
-            return multiplier * 100
-        return -1
+            return 0
 
     def get_action_vectors(self):
         '''

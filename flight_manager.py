@@ -6,27 +6,54 @@ from time import sleep
 
 # This essentially drives all production
 class FlightManager:
-  def __init__(self):
+
+  def __init__(self, pilot):
     self.duration = 90
-    self.client = None
-    self.state = PlaneState(0,0,0,0)
-
-  def startFlight(self, aircraftData):
-    print "Setting up simulation"
     self.client = xpc.XPlaneConnect()
+    self.state = PlaneState(0,0,0,0)
+    self.agent = pilot
+    self.episode = 0
+    self.startLocation = {
+      'lat': 37.524,
+      'lon': -122.06899,
+      'alt': 2500,
+      'pitch': 0,
+      'roll': 0,
+      'heading': 0,
+      'gear': 1,
+      'attack': [18, 0, -998,   0, -998, -998, -998, -998, -998],
+      'velocity': [ 3, 130,  130, 130,  130, -998, -998, -998, -998],
+      'orientation': [16,   0,    0,   0, -998, -998, -998, -998, -998],
+    }
+    self.total_reward = 0
 
-    # Verify connection
-    try:
-        # If X-Plane does not respond to the request, a timeout error
-        # will be raised.
-        self.client.getDREF("sim/test/test_float")
-    except:
-        print "Error establishing connection to X-Plane."
-        print "Exiting..."
-        return
 
+  def run_episode(self):
+    print "New episode"
+    self.episode = self.episode + 1
+    self.client.pauseSim(True)
+    self.start_flight(self.startLocation)
+    self.client.pauseSim(False)
+    step_count = 0
+    episode_reward = 0
+    while True and step_count < 1000:
+      state_vector = self.state.get_state_vector()
+      action_vectors = self.state.get_action_vectors()
+      action = self.agent.get_action(state_vector, action_vectors)
+      self.client.sendCTRL(action)
+      sleep(0.2)
+      reward = self.state.get_reward()
+      episode_reward += reward
+      self.total_reward += reward
+      self.agent.update(state_vector, action, reward)
+      step_count += step_count
+      print "%d, %d, %d, %d" % (self.episode, step_count, reward, episode_reward)
+
+
+
+  def start_flight(self, aircraftData):
     # Set position of the player aircraft
-    print "Setting position"
+    print "Resetting position"
     #       Lat     Lon         Alt   Pitch Roll Yaw Gear
     # posi = [37.524, -122.06899, 2500, 0,    0,   0,  1]
     posi = [aircraftData['lat'],
@@ -38,62 +65,9 @@ class FlightManager:
         	aircraftData['gear']]
     self.client.sendPOSI(posi)
 
-    # Set position of a non-player aircraft
-    # print "Setting NPC position"
-    #       Lat       Lon         Alt   Pitch Roll Yaw Gear
-    # posi = [37.52465, -122.06899, 2500, 0,    20,   0,  1]
-    # client.sendPOSI(posi, 1)
-
-    # Set angle of attack, velocity, and orientation using the DATA command
     print "Setting orientation"
-    # data = [\
-    #     [18,   0, -998,   0, -998, -998, -998, -998, -998],\
-    #     [ 3, 130,  130, 130,  130, -998, -998, -998, -998],\
-    #     [16,   0,    0,   0, -998, -998, -998, -998, -998]\
-    #     ]
-    # data = [\
-    #     aircraftData['attack'],\
-    #     aircraftData['velocity'],\
-    #     aircraftData['orientation']\
-    #     ]
     data = [aircraftData['attack'], aircraftData['velocity'], aircraftData['orientation']]
     self.client.sendDATA(data)
 
-    # Set control surfaces and throttle of the player aircraft using sendCTRL
-    print "Setting controls"
-    ctrl = [0.0, 0.0, 0.0, 0.8]
-    self.client.sendCTRL(ctrl)
 
-    # Pause the sim
-    # print "Pausing"
-    # client.pauseSim(True)
-    # sleep(2)
-
-    # Toggle pause state to resume
-    # print "Resuming"
-    # client.pauseSim(False)
-
-    # Stow landing gear using a dataref
-    # print "Stowing gear"
-    # gear_dref = "sim/cockpit/switches/gear_handle_status"
-    # client.sendDREF(gear_dref, 0)
-
-    # Let the sim run for a bit.
-    # sleep(4)
-
-    # Make sure gear was stowed successfully
-    # gear_status = self.client.getDREF(gear_dref)
-    # if gear_status[0] == 0:
-    #     print "Gear stowed"
-    # else:
-    #     print "Error stowing gear"
-
-    # raw_input("Press any key to exit...")
-    while True:
-        sleep(0.5)
-        self.maneuverAircraft(None)
-
-
-  def maneuverAircraft(self, params):
-    self.client.sendCTRL(random.choice(self.state.get_action_vectors()))
 
