@@ -81,7 +81,7 @@ class PlaneState(object):
                     for throttle in throttle_opts:
                         for gear in gear_opts:
                             # Ignoring flaps and speedbrakes
-                            action_vectors.append(lat, lon, rudder, throttle, gear, 0, 0)
+                            action_vectors.append([lat, lon, rudder, throttle, gear, 0, 0])
 
         return action_vectors
 

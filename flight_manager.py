@@ -8,7 +8,7 @@ class FlightManager:
   def __init__(self):
     self.duration = 90
     self.client = None
-    self.state = PlaneState()
+    self.state = PlaneState(0,0,0,0)
 
   def startFlight(self, aircraftData):
     print "Setting up simulation"
@@ -90,12 +90,9 @@ class FlightManager:
     # raw_input("Press any key to exit...")
     while True:
         sleep(0.5)
-        maneuverAircraft(None)
+        self.maneuverAircraft(None)
 
 
   def maneuverAircraft(self, params):
-    self.client.sendCTRL(random.choice(state.get_action_vectors())
-
-
-
+    self.client.sendCTRL(random.choice(self.state.get_action_vectors()))
 
