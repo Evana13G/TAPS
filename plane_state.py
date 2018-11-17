@@ -52,3 +52,36 @@ class PlaneState(object):
             return multiplier * 100
         return -1
 
+    def get_action_vectors(self):
+        '''
+        The control surface values to set. `values` is a array containing up to
+        6 elements. If less than 6 elements are specified or any elment is set to `-998`,
+        those values will not be changed. The elements in `values` corespond to the
+        following:
+          * Latitudinal Stick [-1,1]
+          * Longitudinal Stick [-1,1]
+          * Rudder Pedals [-1, 1]
+          * Throttle [-1, 1]
+          * Gear (0=up, 1=down)
+          * Flaps [0, 1]
+          * Speedbrakes [-0.5, 1.5]
+        '''
+        latitude_opts = [-1, 0, 1]
+        longitude_opts = [-1, 0, 1]
+        rudder_opts = [-1, 0, 1]
+        throttle_opts = [0, .2, .4, .6, .8]
+        gear_opts = [0]
+        flap_opts = [0]
+        speedbrake_opts = [0]
+
+        action_vectors = []
+        for lat in latitude_opts:
+            for lon in longitude_opts:
+                for rudder in rudder_opts:
+                    for throttle in throttle_opts:
+                        for gear in gear_opts:
+                            # Ignoring flaps and speedbrakes
+                            action_vectors.append([lat, lon, rudder, throttle, gear, 0, 0])
+
+        return action_vectors
+
