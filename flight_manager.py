@@ -1,5 +1,5 @@
 import numpy as np
-import random 
+import random
 from plane_state import PlaneState
 import xpc
 from time import sleep
@@ -8,6 +8,7 @@ class FlightManager:
   def __init__(self):
     self.duration = 90
     self.client = None
+    self.state = PlaneState()
 
   def startFlight(self, aircraftData):
     print "Setting up simulation"
@@ -27,7 +28,7 @@ class FlightManager:
     print "Setting position"
     #       Lat     Lon         Alt   Pitch Roll Yaw Gear
     # posi = [37.524, -122.06899, 2500, 0,    0,   0,  1]
-    posi = [aircraftData['lat'], 
+    posi = [aircraftData['lat'],
     		aircraftData['lon'],
     		aircraftData['alt'],
         	aircraftData['pitch'],
@@ -35,7 +36,7 @@ class FlightManager:
         	aircraftData['heading'],
         	aircraftData['gear']]
     self.client.sendPOSI(posi)
-    
+
     # Set position of a non-player aircraft
     # print "Setting NPC position"
     #       Lat       Lon         Alt   Pitch Roll Yaw Gear
@@ -87,39 +88,13 @@ class FlightManager:
     #     print "Error stowing gear"
 
     # raw_input("Press any key to exit...")
+    while True:
+        sleep(0.5)
+        maneuverAircraft(None)
 
 
   def maneuverAircraft(self, params):
-    pitch_dref = "sim/cockpit/yoke_pitch_ratio"
-    roll_dref = "sim/cockpit/yoke_roll_ratio"
-    heading_dref = "sim/cockpit/yoke_heading_ratio"
-    self.client.sendDREF(pitch_dref, params['pitch'])
-    sleep(2)
-    self.client.sendDREF(roll_dref, params['roll'])
-    sleep(2)
-    self.client.sendDREF(heading_dref, params['heading'])
-
-    # Make sure maneuver was set correctly
-    pitch_status = self.client.getDREF(pitch_dref)
-    roll_status = self.client.getDREF(roll_dref)
-    heading_status = self.client.getDREF(heading_dref)
-
-    print pitch_status
-    print roll_status
-    print heading_status
-    
-    # if pitch_status[0] == params['pitch']:
-    #     print "Pitch set correctly"
-    # else:
-    #     print "Error setting pitch"
-    # if roll_status[0] == params['roll']:
-    #     print "Roll set correctly"
-    # else:
-    #     print "Error setting roll"
-    # if heading_status[0] == params['heading']:
-    #     print "Heading set correctly"
-    # else:
-    #     print "Error setting heading"
+    self.client.sendCTRL(random.choice(state.get_action_vectors())
 
 
 
