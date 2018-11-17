@@ -14,9 +14,11 @@ class Agent:
     print "Begin learning"
 
   def get_action(self, state, actions):
+    # Evana 
     return random.choice(actions)
 
   def update(self, state, action, reward):
+    # David
     pass
 
   def get_qval(seld, state, action):
@@ -29,3 +31,4 @@ class Agent:
       q = q + (state[i] * self.W[i + numStateFeatures])
 
     return q
+
