@@ -16,4 +16,3 @@ flightManager = FlightManager(agent)
 
 print "Starting Flight"
 flightManager.run_episode()
-flightManager.run_episode()
