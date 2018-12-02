@@ -38,12 +38,12 @@ class FlightManager:
     self.client.pauseSim(False)
     step_count = 0
     episode_reward = 0
-    while True and step_count < 1000:
+    while True and step_count < 500:
       state_vector = self.state.get_normalized_state_vector()
       action_vectors = self.state.get_action_vectors()
       action = self.agent.get_action(state_vector, action_vectors)
       self.client.sendCTRL(action)
-      sleep(0.2)
+      sleep(0.1)
       reward = self.state.get_reward()
       episode_reward += reward
       self.total_reward += reward

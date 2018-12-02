@@ -13,10 +13,12 @@ class QAgent:
   def __init__(self, state_vector_size, action_vector_size, weights = None):
     self.learning_mode = "Q"
     self.vector_size = state_vector_size + action_vector_size
+    self.vector_size += 2
     weights = []
     for i in range(self.vector_size):
       weights.append(0.00)
     if (weights is not None):
+      print "Weight passed in"
       self.weights = weights
     self.begin_learning()
     self.bias = 0.0
@@ -28,8 +30,12 @@ class QAgent:
     for i in range(self.vector_size):
       self.eligibility.append(0.00)
 
+  def get_extra(self, state, action):
+    return [state[8] * action[0], state[7] * action[1]]
+
   def evaluate(self, state, action):
-    return sum([duo[0] * duo[1] for duo in zip(self.weights, state + action)]) + self.bias
+    extra = self.get_extra(state, action)
+    return sum([duo[0] * duo[1] for duo in zip(self.weights, state + action + extra)]) + self.bias
 
   def get_action(self, state, actions):
     if random.random() < EPSILON:
@@ -61,6 +67,7 @@ class QAgent:
     self.eligibility = [e * update for e in self.eligibility]
 
   def add_traces(self, state, action):
-    self.eligibility = [duo[0] + duo[1] for duo in zip(self.eligibility, state + action)]
+    extra = self.get_extra(state, action)
+    self.eligibility = [duo[0] + duo[1] for duo in zip(self.eligibility, state + action + extra)]
 
 
