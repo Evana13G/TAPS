@@ -8,7 +8,7 @@ class Agent:
   def __init__(self):
     self.learning_mode = "Q"
 
-  def beginLearning(self):
+  def begin_learning(self):
     print "Begin learning"
 
   def get_action(self, state, actions):
