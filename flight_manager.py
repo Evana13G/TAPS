@@ -40,7 +40,6 @@ class FlightManager:
     episode_reward = 0
     while True and step_count < 1000:
       state_vector = self.state.get_normalized_state_vector()
-      print state_vector
       action_vectors = self.state.get_action_vectors()
       action = self.agent.get_action(state_vector, action_vectors)
       self.client.sendCTRL(action)
@@ -49,7 +48,7 @@ class FlightManager:
       episode_reward += reward
       self.total_reward += reward
       self.agent.update(reward)
-      step_count += step_count
+      step_count += 1
       print "%d, %d, %d, %d" % (self.episode, step_count, reward, episode_reward)
 
 

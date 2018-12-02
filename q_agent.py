@@ -38,7 +38,9 @@ class QAgent:
     self.decay_traces(GAMMA * LAMBDA)
     self.add_traces(self.last_action[1], self.last_action[2])
     delta = reward - self.last_action[0]
+    print "reward %f, expected %f, delta %f" % (reward, self.last_action[0], delta)
     self.update_weights(delta + GAMMA * self.last_action[0])
+    print self.weights
 
 
   def update_weights(self, update):

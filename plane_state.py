@@ -66,17 +66,23 @@ class PlaneState(object):
         state[1] = state[1]/20000
         state[2] = state[2]/20000
 
+        state[14] = state[14]/20000
+        state[15] = state[15]/20000
+        state[16] = state[16]/20000
+
         # fix velocities. Assuming max 300 for now
         state[3] = state[3]/300
         state[4] = state[4]/300
         state[5] = state[5]/300
         state[6] = state[6]/300
 
+        state[17] = state[17]/600
+
         state[13] = state[13]/300
 
         # Fix pitch, roll, and heading to -1 <-> 1
-        state[7] = state[7] / 90.0
-        state[8] = state[8] / 90.0
+        state[7] = state[7] / 180.0
+        state[8] = state[8] / 180.0
         # heading subtract 180 and then divide by the same og range 0 - 360
         state[9] = (state[9] - 180) / 180
 
@@ -85,6 +91,9 @@ class PlaneState(object):
         state[11] = state[11] / 100
         state[12] = state[12] / 100
 
+        for i in range(len(state)):
+            if abs(state[i]) > 1:
+                print "%d is bigger than it should be its value is %f" % (i, state[i])
 
         return state
 
@@ -107,10 +116,10 @@ class PlaneState(object):
           * Flaps [0, 1]
           * Speedbrakes [-0.5, 1.5]
         '''
-        latitude_opts = [-1, 0, 1]
-        longitude_opts = [-1, 0, 1]
-        rudder_opts = [-1, 0, 1]
-        throttle_opts = [0, .2, .4, .6, .8]
+        latitude_opts = [-1, -0.5, 0, 0.5, 1]
+        longitude_opts = [-1, 0.5, 0, 0.5, 1]
+        rudder_opts = [-1, 0.5, 0, 0.5, 1]
+        throttle_opts = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, .99]
         gear_opts = [0]
         flap_opts = [0]
         speedbrake_opts = [0]
