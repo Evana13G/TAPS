@@ -18,6 +18,8 @@ def fly_flat_reward(self):
     if abs(state[6]) < 250 and abs(state[6]) > 225:
         reward = reward + 1
 
+    if (state[9] > 170) and state[9] < 190:
+        reward = reward + 2
 
     if abs(state[7]) < 2.5 and abs(state[8]) < 2.5:
         return reward + 4

@@ -13,7 +13,7 @@ class QAgent:
   def __init__(self, state_vector_size, action_vector_size, weights = None):
     self.learning_mode = "Q"
     self.vector_size = state_vector_size + action_vector_size
-    self.vector_size += 2
+    self.vector_size = 27
     weights = []
     for i in range(self.vector_size):
       weights.append(0.00)
