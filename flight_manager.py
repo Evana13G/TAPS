@@ -1,6 +1,7 @@
 import numpy as np
 import random
 from plane_state import PlaneState
+import reward_functions
 import xpc
 from time import sleep
 
@@ -10,7 +11,7 @@ class FlightManager:
   def __init__(self, pilot):
     self.duration = 90
     self.client = xpc.XPlaneConnect()
-    self.state = PlaneState(0,0,0,0)
+    self.state = PlaneState(0,0,0,0, reward_functions.fly_flat_reward)
     self.agent = pilot
     self.episode = 0
     self.startLocation = {
@@ -33,11 +34,13 @@ class FlightManager:
     self.episode = self.episode + 1
     self.client.pauseSim(True)
     self.start_flight(self.startLocation)
+    self.agent.begin_learning()
     self.client.pauseSim(False)
     step_count = 0
     episode_reward = 0
     while True and step_count < 1000:
-      state_vector = self.state.get_state_vector()
+      state_vector = self.state.get_normalized_state_vector()
+      print state_vector
       action_vectors = self.state.get_action_vectors()
       action = self.agent.get_action(state_vector, action_vectors)
       self.client.sendCTRL(action)
