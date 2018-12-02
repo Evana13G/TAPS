@@ -75,7 +75,6 @@ class PlaneState(object):
         state[13] = state[13]/300
 
         # Fix pitch, roll, and heading to -1 <-> 1
-        state[6] = "hello"
         state[7] = state[7] / 90.0
         state[8] = state[8] / 90.0
         # heading subtract 180 and then divide by the same og range 0 - 360

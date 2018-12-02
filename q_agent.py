@@ -11,19 +11,23 @@ class QAgent:
   def __init__(self, state_vector_size, action_vector_size, weights = None):
     self.learning_mode = "Q"
     self.vector_size = state_vector_size + action_vector_size
-    self.weights = [0.00] * (self.vector_size)
+    weights = []
+    for i in range(self.vector_size):
+      weights.append(0.00)
     if (weights is not None):
       self.weights = weights
     self.begin_learning()
-    self.bias = 0
-    self.eligibility_bias = 0
+    self.bias = 0.0
+    self.eligibility_bias = 0.0
 
   def begin_learning(self):
     print "Begin learning"
-    self.eligibility = [0.00] * (self.vector_size)
+    self.eligibility = []
+    for i in range(self.vector_size):
+      self.eligibility.append(0.00)
 
   def evaluate(self, state, action):
-    return sum([duo[0] * duo[1] for duo in zip(self.weights, self.state + self.action)]) + self.bias
+    return sum([duo[0] * duo[1] for duo in zip(self.weights, state + action)]) + self.bias
 
   def get_action(self, state, actions):
     (q, action) = max([(self.evaluate(state,action), action) for action in actions])
@@ -46,4 +50,6 @@ class QAgent:
     self.eligibility = [e * update for e in self.eligibility]
 
   def add_traces(self, state, action):
-    self.eligibility = [duo[0] + duo[1] for zip(self.eligibility, state + action)]
+    self.eligibility = [duo[0] + duo[1] for duo in zip(self.eligibility, state + action)]
+
+

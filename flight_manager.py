@@ -48,7 +48,7 @@ class FlightManager:
       reward = self.state.get_reward()
       episode_reward += reward
       self.total_reward += reward
-      self.agent.update(state_vector, action, reward)
+      self.agent.update(reward)
       step_count += step_count
       print "%d, %d, %d, %d" % (self.episode, step_count, reward, episode_reward)
 
