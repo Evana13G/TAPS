@@ -10,7 +10,7 @@ class Agent:
     self.W = _w
     self.gamma = discount_factor
 
-  def beginLearning(self):
+  def begin_learning(self):
     print "Begin learning"
 
   def get_action(self, state, actions):
