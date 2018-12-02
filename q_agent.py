@@ -4,8 +4,10 @@ from plane_state import PlaneState
 import xpc
 from time import sleep
 
-GAMMA = 0.001
-LAMBDA = 0.004
+GAMMA = 0.99
+LAMBDA = 0.7
+ALPHA = 0.01
+EPSILON = 0.05
 
 class QAgent:
   def __init__(self, state_vector_size, action_vector_size, weights = None):
@@ -30,16 +32,23 @@ class QAgent:
     return sum([duo[0] * duo[1] for duo in zip(self.weights, state + action)]) + self.bias
 
   def get_action(self, state, actions):
+    if random.random() < EPSILON:
+      action = random.sample(actions, 1)[0]
+      self.last_action = (self.evaluate(state, action), state, action)
+      return action
+
     (q, action) = max([(self.evaluate(state,action), action) for action in actions])
     self.last_action = (q, state, action)
     return action
 
   def update(self, reward):
+    if (reward > 0.01):
+      print "POSITIVE!"
     self.decay_traces(GAMMA * LAMBDA)
     self.add_traces(self.last_action[1], self.last_action[2])
     delta = reward - self.last_action[0]
     print "reward %f, expected %f, delta %f" % (reward, self.last_action[0], delta)
-    self.update_weights(delta + GAMMA * self.last_action[0])
+    self.update_weights((delta + GAMMA * self.last_action[0]) * ALPHA)
     print self.weights
 
 

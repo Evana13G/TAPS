@@ -16,4 +16,5 @@ agent = QAgent(17, 6)
 flightManager = FlightManager(agent)
 
 print "Starting Flight"
-flightManager.run_episode()
+while True:
+  flightManager.run_episode()

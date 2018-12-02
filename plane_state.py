@@ -86,10 +86,10 @@ class PlaneState(object):
         # heading subtract 180 and then divide by the same og range 0 - 360
         state[9] = (state[9] - 180) / 180
 
-        # Roll rates and stuff I am just going to assume have a max of +- 100
-        state[10] = state[10] / 100
-        state[11] = state[11] / 100
-        state[12] = state[12] / 100
+        # Roll rates and stuff I am just going to assume have a max of +- 200
+        state[10] = state[10] / 200
+        state[11] = state[11] / 200
+        state[12] = state[12] / 200
 
         for i in range(len(state)):
             if abs(state[i]) > 1:
