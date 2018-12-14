@@ -15,13 +15,15 @@ def get_reward(self):
 def fly_flat_reward(self):
     state = self.get_raw_state()
     reward = 0
-    if abs(state[6]) < 250 and abs(state[6]) > 225:
+    if abs(state[6]) < 120 and abs(state[6]) > 80:
         reward = reward + 1
 
+    if (state[9] > 170) and state[9] < 190:
+        reward = reward + 10
 
-    if abs(state[7]) < 2.5 and abs(state[8]) < 2.5:
+    if abs(state[7]) < 4 and abs(state[8]) < 4:
         return reward + 4
-    elif abs(state[7]) < 5 and abs(state[8]) < 5:
+    elif abs(state[7]) < 8 and abs(state[8]) < 8:
         return reward + 2
     elif abs(state[7]) < 10 and abs(state[8]) < 10:
         return reward + 1
