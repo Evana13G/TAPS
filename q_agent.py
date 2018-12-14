@@ -30,12 +30,9 @@ class QAgent:
     for i in range(self.vector_size):
       self.eligibility.append(0.00)
 
-  def get_extra(self, state, action):
-    return [state[8] * action[0], state[7] * action[1], abs(state[8] * action[0]), abs(state[7] * action[1]), 1-abs(state[8]), 1-abs(state[7]), -1 * action[0], -1 * action[1]]
-
   def evaluate(self, state, action):
     extra = self.get_extra(state, action)
-    return sum([duo[0] * duo[1] for duo in zip(self.weights, state + action + extra)]) + self.bias
+    return sum([duo[0] * duo[1] for duo in zip(self.weights, state.get_vector(action))]) + self.bias
 
   def get_action(self, state, actions):
     if random.random() < EPSILON:
@@ -43,7 +40,7 @@ class QAgent:
       self.last_action = (self.evaluate(state, action), state, action)
       return action
 
-    (q, action) = max([(self.evaluate(state,action), action) for action in actions])
+    (q, action) = max([(self.evaluate(state, action), action) for action in actions])
     self.last_action = (q, state, action)
     return action
 
@@ -66,6 +63,6 @@ class QAgent:
 
   def add_traces(self, state, action):
     extra = self.get_extra(state, action)
-    self.eligibility = [duo[0] + duo[1] for duo in zip(self.eligibility, state + action + extra)]
+    self.eligibility = [duo[0] + duo[1] for duo in zip(self.eligibility, state.get_vector(action))]
 
 

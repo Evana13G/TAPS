@@ -100,6 +100,11 @@ class PlaneState(object):
 
         return state
 
+    def get_vector(self, action):
+        state = self.get_normalized_state_vector()
+        return state + action + [state[8] * action[0], state[7] * action[1], abs(state[8] * action[0]), abs(state[7] * action[1]), 1-abs(state[8]), 1-abs(state[7]), -1 * action[0], -1 * action[1]]
+
+
     @catch_disconnects
     def get_reward(self):
         return self.reward_function(self)
