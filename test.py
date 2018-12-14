@@ -14,15 +14,18 @@ import sys
 args = sys.argv
 args.pop(0)
 weight = [float(arg) for arg in args]
+agent = None
 if not weight:
   agent = QAgent(17, 6)
 else:
   agent = QAgent(17, 6, weight)
 
-agent = Agent()
+# agent = Agent()
 
 flightManager = FlightManager(agent)
 
 print "Starting Flight"
-while True:
+episodes = 0
+while episodes < 5:
   flightManager.run_episode()
+  episodes = episodes + 1
