@@ -23,7 +23,7 @@ class FlightManager:
       'heading': 0,
       'gear': 0,
       'attack': [18, 0, -998,   0, -998, -998, -998, -998, -998],
-      'velocity': [ 3, 300,  300, 300,  130, -998, -998, -998, -998],
+      'velocity': [ 3, 300,  0, 0,  130, -998, -998, -998, -998],
       'orientation': [16,   0,    0,   0, -998, -998, -998, -998, -998],
     }
     self.total_reward = 0
@@ -38,16 +38,17 @@ class FlightManager:
     self.client.pauseSim(False)
     step_count = 0
     episode_reward = 0
+    reward = 0
     while True and step_count < 2000:
       state_vector = self.state.get_normalized_state_vector()
       action_vectors = self.state.get_action_vectors()
       action = self.agent.get_action(state_vector, action_vectors)
+      self.agent.update(reward, state_vector, action)
       self.client.sendCTRL(action)
-      sleep(0.05)
+      sleep(0.2)
       reward = self.state.get_reward()
       episode_reward += reward
       self.total_reward += reward
-      self.agent.update(reward)
       step_count += 1
       print "%d, %d, %d, %d" % (self.episode, step_count, reward, episode_reward)
 
