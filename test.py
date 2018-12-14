@@ -19,6 +19,8 @@ if not weight:
 else:
   agent = QAgent(17, 6, weight)
 
+agent = Agent()
+
 flightManager = FlightManager(agent)
 
 print "Starting Flight"

@@ -5,15 +5,15 @@ import xpc
 from time import sleep
 
 GAMMA = 0.99
-LAMBDA = 0.7
-ALPHA = 0.01
+LAMBDA = 0.9
+ALPHA = 0.0001
 EPSILON = 0.05
 
 class QAgent:
   def __init__(self, state_vector_size, action_vector_size, weights = None):
     self.learning_mode = "Q"
     self.vector_size = state_vector_size + action_vector_size
-    self.vector_size += 2
+    self.vector_size = 33
     weights = []
     for i in range(self.vector_size):
       weights.append(0.00)
@@ -31,7 +31,7 @@ class QAgent:
       self.eligibility.append(0.00)
 
   def get_extra(self, state, action):
-    return [state[8] * action[0], state[7] * action[1]]
+    return [state[8] * action[0], state[7] * action[1], abs(state[8] * action[0]), abs(state[7] * action[1]), 1-abs(state[8]), 1-abs(state[7]), -1 * action[0], -1 * action[1]]
 
   def evaluate(self, state, action):
     extra = self.get_extra(state, action)
@@ -47,14 +47,12 @@ class QAgent:
     self.last_action = (q, state, action)
     return action
 
-  def update(self, reward):
-    if (reward > 0.01):
-      print "POSITIVE!"
+  def update(self, reward, state, action):
     self.decay_traces(GAMMA * LAMBDA)
     self.add_traces(self.last_action[1], self.last_action[2])
     delta = reward - self.last_action[0]
     print "reward %f, expected %f, delta %f" % (reward, self.last_action[0], delta)
-    self.update_weights((delta + GAMMA * self.last_action[0]) * ALPHA)
+    self.update_weights((delta + GAMMA * self.evaluate(state, action)) * ALPHA)
     print self.weights
 
 

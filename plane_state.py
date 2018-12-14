@@ -62,9 +62,12 @@ class PlaneState(object):
         state = self.get_state_vector()
 
         # fix position. I havent seen abs(pos) > 10k so dividing by 20k
-        state[0] = state[0]/20000
-        state[1] = state[1]/20000
-        state[2] = state[2]/20000
+        # state[0] = state[0]/20000
+        # state[1] = state[1]/20000
+        # state[2] = state[2]/20000
+        state[0] = 0
+        state[1] = 0
+        state[2] = 0
 
         state[14] = state[14]/20000
         state[15] = state[15]/20000
@@ -116,10 +119,10 @@ class PlaneState(object):
           * Flaps [0, 1]
           * Speedbrakes [-0.5, 1.5]
         '''
-        latitude_opts = [-1, -0.5, 0, 0.5, 1]
-        longitude_opts = [-1, 0.5, 0, 0.5, 1]
-        rudder_opts = [-1, 0.5, 0, 0.5, 1]
-        throttle_opts = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, .99]
+        latitude_opts = [-0.5, -0.25, 0, 0.25, 0.5]
+        longitude_opts = [0.5, -0.25, 0, 0.25, 0.5]
+        rudder_opts = [0.5, 0.25, 0, 0.25, 0.5]
+        throttle_opts = [.3, .4, .5, .6, .7, .8, .9, .99]
         gear_opts = [0]
         flap_opts = [0]
         speedbrake_opts = [0]
