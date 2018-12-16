@@ -40,7 +40,7 @@ class FlightManager:
     step_count = 0
     episode_reward = 0
     reward = 0
-    while True and step_count < 2000:
+    while step_count < 1000:
       action_vectors = self.state.get_action_vectors()
       action = self.agent.get_action(self.state, action_vectors)
       vector = self.state.get_vector(action)
@@ -53,6 +53,8 @@ class FlightManager:
       step_count += 1
       print "%d, %d, %d, %d" % (self.episode, step_count, reward, episode_reward)
       self.reward_curve_data.append([self.episode, step_count, reward])
+      
+    self.reward_curve_data_to_CSV()
 
   def start_flight(self, aircraftData):
     # Set position of the player aircraft
