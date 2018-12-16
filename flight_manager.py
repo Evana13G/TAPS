@@ -4,6 +4,7 @@ from plane_state import PlaneState
 import reward_functions
 import xpc
 from time import sleep
+import csv
 
 # This essentially drives all production
 class FlightManager:
@@ -14,6 +15,7 @@ class FlightManager:
     self.state = PlaneState(0,0,0,0, reward_functions.fly_flat_reward)
     self.agent = pilot
     self.episode = 0
+    self.steps_overall = 0
     self.startLocation = {
       'lat': 37.524,
       'lon': -122.06899,
@@ -27,7 +29,7 @@ class FlightManager:
       'orientation': [16,   0,    0,   0, -998, -998, -998, -998, -998],
     }
     self.total_reward = 0
-
+    self.reward_curve_data = []
 
   def run_episode(self):
     print "New episode"
@@ -49,7 +51,10 @@ class FlightManager:
       self.total_reward += reward
       self.agent.update(reward)
       step_count += 1
+      self.steps_overall += 1
       print "%d, %d, %d, %d" % (self.episode, step_count, reward, episode_reward)
+      self.reward_curve_data.append([self.episode, step_count, reward, episode_reward, self.steps_overall, self.total_reward])
+    self.reward_curve_data_to_CSV()
 
 
 
@@ -71,5 +76,9 @@ class FlightManager:
     data = [aircraftData['attack'], aircraftData['velocity'], aircraftData['orientation']]
     self.client.sendDATA(data)
 
-
+  def reward_curve_data_to_CSV(self):
+     with open('reward_curve_data.csv', mode='w') as rcd_f:
+       rcd_w = csv.writer(rcd_f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+       for dataPoint in self.reward_curve_data:
+         rcd_w.writerow([dataPoint[0], dataPoint[1], dataPoint[2], dataPoint[3], dataPoint[4], dataPoint[5]])
 

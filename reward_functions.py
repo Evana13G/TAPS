@@ -42,4 +42,5 @@ def fly_flat_reward(self):
         reward = reward - 2
     if abs(state[8]) > 40:
         reward = reward - 2
+
     return reward
