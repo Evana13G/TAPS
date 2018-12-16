@@ -15,9 +15,9 @@ args = sys.argv
 args.pop(0)
 weight = [float(arg) for arg in args]
 if not weight:
-  agent = QAgent(17, 6)
+  agent = QAgent(18, 7)
 else:
-  agent = QAgent(17, 6, weight)
+  agent = QAgent(18, 7, weight)
 
 flightManager = FlightManager(agent)
 

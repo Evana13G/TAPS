@@ -21,9 +21,9 @@ def fly_flat_reward(self):
 
     if abs(state[7]) < 2.5 and abs(state[8]) < 2.5:
         return reward + 4
-    elif abs(state[7]) < 5 and abs(state[8]) < 5:
+    elif abs(state[7]) < 7.5 and abs(state[8]) < 7.5:
         return reward + 2
-    elif abs(state[7]) < 10 and abs(state[8]) < 10:
+    elif abs(state[7]) < 12.5 and abs(state[8]) < 12.5:
         return reward + 1
 
     if abs(state[7]) > 10:

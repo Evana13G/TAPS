@@ -5,15 +5,15 @@ import xpc
 from time import sleep
 
 GAMMA = 0.99
-LAMBDA = 0.7
-ALPHA = 0.01
+LAMBDA = 0.5
+ALPHA = 0.001
 EPSILON = 0.05
 
 class QAgent:
   def __init__(self, state_vector_size, action_vector_size, weights = None):
     self.learning_mode = "Q"
     self.vector_size = state_vector_size + action_vector_size
-    self.vector_size += 2
+    self.vector_size += 12
     weights = []
     for i in range(self.vector_size):
       weights.append(0.00)
@@ -31,7 +31,19 @@ class QAgent:
       self.eligibility.append(0.00)
 
   def get_extra(self, state, action):
-    return [state[8] * action[0], state[7] * action[1]]
+    return [state[8] * action[0], 
+      state[7] * action[1], 
+      state[9] * action[2],
+      state[11] * action[0], 
+      state[10] * action[1],
+      state[12] * action[2],
+      abs(state[8] * action[0]), 
+      abs(state[7] * action[1]), 
+      abs(state[9] * action[2]),
+      abs(state[11] * action[0]), 
+      abs(state[10] * action[1]),
+      abs(state[12] * action[2]),
+      ]
 
   def evaluate(self, state, action):
     extra = self.get_extra(state, action)

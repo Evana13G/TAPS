@@ -116,9 +116,9 @@ class PlaneState(object):
           * Flaps [0, 1]
           * Speedbrakes [-0.5, 1.5]
         '''
-        latitude_opts = [-1, -0.5, 0, 0.5, 1]
-        longitude_opts = [-1, 0.5, 0, 0.5, 1]
-        rudder_opts = [-1, 0.5, 0, 0.5, 1]
+        latitude_opts = [-1, -0.5, 0.0, 0.5, 1]
+        longitude_opts = [-1, 0.5, 0.0, 0.5, 1]
+        rudder_opts = [-1, 0.5, 0.0, 0.5, 1]
         throttle_opts = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, .99]
         gear_opts = [0]
         flap_opts = [0]
