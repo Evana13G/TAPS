@@ -15,11 +15,11 @@ args = sys.argv
 args.pop(0)
 weight = [float(arg) for arg in args]
 if not weight:
-  agent = QAgent(18, 7)
+  agent = QAgent(54, 7, 12)
 else:
-  agent = QAgent(18, 7, weight)
+  agent = QAgent(54, 7, weight)
 
-flightManager = FlightManager(agent)
+flightManager = FlightManager(agent, "apha 0.0005")
 
 print "Starting Flight"
 while True:

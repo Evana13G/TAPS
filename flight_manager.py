@@ -9,11 +9,12 @@ import csv
 # This essentially drives all production
 class FlightManager:
 
-  def __init__(self, pilot):
+  def __init__(self, pilot, pilot_name):
     self.duration = 90
     self.client = xpc.XPlaneConnect()
     self.state = PlaneState(0,0,0,0, reward_functions.fly_flat_reward)
     self.agent = pilot
+    self.name = pilot_name
     self.episode = 0
     self.steps_overall = 0
     self.startLocation = {
@@ -77,8 +78,8 @@ class FlightManager:
     self.client.sendDATA(data)
 
   def reward_curve_data_to_CSV(self):
-     with open('reward_curve_data.csv', mode='w') as rcd_f:
+     with open('reward_curve_data.csv', mode='a') as rcd_f:
        rcd_w = csv.writer(rcd_f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
        for dataPoint in self.reward_curve_data:
-         rcd_w.writerow([dataPoint[0], dataPoint[1], dataPoint[2], dataPoint[3], dataPoint[4], dataPoint[5]])
+         rcd_w.writerow([self.name, dataPoint[0], dataPoint[1], dataPoint[2], dataPoint[3], dataPoint[4], dataPoint[5]])
 

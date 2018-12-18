@@ -6,14 +6,14 @@ from time import sleep
 
 GAMMA = 0.99
 LAMBDA = 0.5
-ALPHA = 0.001
+ALPHA = 0.0005
 EPSILON = 0.05
 
 class QAgent:
-  def __init__(self, state_vector_size, action_vector_size, weights = None):
+  def __init__(self, state_vector_size, action_vector_size, extra = 12, weights = None):
     self.learning_mode = "Q"
     self.vector_size = state_vector_size + action_vector_size
-    self.vector_size += 12
+    self.vector_size += extra
     weights = []
     for i in range(self.vector_size):
       weights.append(0.00)
