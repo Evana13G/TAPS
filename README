@@ -1,2 +1,5 @@
 Evana Gizzi and David Zabner 
 ##### Run Instructions 
+To run this code you will need a working copy of X-Plane 10 or 11 with the XPlaneConnect plugin available at https://github.com/nasa/XPlaneConnect.
+
+Once this is functioning, pull up a flight and run `python test.py` to see some wonderful flying!
